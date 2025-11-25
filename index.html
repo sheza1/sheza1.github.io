@@ -9,71 +9,101 @@
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet" />
 
   <style>
+    /* Base Styles */
     body {
       margin: 0;
       font-family: 'Poppins', sans-serif;
       background-color: #E4C9A2; /* dough brown */
-      text-align: center;
-      padding: 0;
       color: #4E3B31; /* espresso */
+      text-align: center;
     }
 
+    /* Container (hero section) */
     .container {
       background-color: #D8A47F; /* terra cotta */
-      width: 100%;
-      padding: 60px 20px;
-      border-radius: 0;
-      box-shadow: none;
-      margin: 0 0 40px 0;
+      width: 90%;
+      max-width: 900px;
+      margin: 60px auto;
+      padding: 80px 30px;
+      border-radius: 20px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
     }
 
     h1 {
       font-family: 'Playfair Display', serif;
       font-size: 3rem;
-      color: #4E3B31;
-      margin-bottom: 15px;
-      font-weight: 600;
+      font-weight: 700;
+      margin-bottom: 20px;
     }
 
     p {
       font-size: 1.3rem;
-      color: #4E3B31; /* espresso */
-      max-width: 700px;
-      margin: 15px auto;
+      margin: 0 auto 40px;
+      max-width: 650px;
+      line-height: 1.6;
     }
 
+    /* Button */
     .fun-button {
       display: inline-flex;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
       background-color: #A3B59F; /* sage green */
-      padding: 18px 28px;
+      padding: 18px 32px;
       border-radius: 50px;
       font-size: 1.3rem;
+      font-weight: 500;
       color: #4E3B31; /* espresso */
-      font-family: 'Poppins', sans-serif;
       text-decoration: none;
       box-shadow: 0 6px 12px rgba(0,0,0,0.15);
-      transition: transform 0.2s;
+      transition: transform 0.2s, box-shadow 0.2s;
     }
 
     .fun-button:hover {
       transform: scale(1.05);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.2);
     }
 
     .steam {
       font-size: 1.6rem;
     }
+
+    /* Optional small footer note */
+    footer {
+      margin-top: 80px;
+      font-size: 0.9rem;
+      color: #4E3B31;
+      opacity: 0.7;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 2.2rem;
+      }
+      p {
+        font-size: 1.1rem;
+      }
+      .fun-button {
+        padding: 14px 24px;
+        font-size: 1.1rem;
+      }
+    }
   </style>
 </head>
 <body>
+
   <div class="container">
     <h1>Welcome to My Food Studio</h1>
-    <p>Just Warming Up!</p>
+    <p>Just Warming Up! Delicious recipes, tips, and culinary inspiration are coming your way. Stay tuned!</p>
+    <a class="fun-button" href="#">
+      🍲 <span>Recipes Coming Soon</span> <span class="steam">♨️</span>
+    </a>
   </div>
 
-  <a class="fun-button" href="#">
-    🍲 <span>Recipes Coming Soon</span> <span class="steam">♨️</span>
-  </a>
+  <footer>
+    &copy; 2025 Sheza's Food Studio
+  </footer>
+
 </body>
 </html>
