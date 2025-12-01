@@ -2,34 +2,28 @@ const AIRTABLE_TOKEN = "$AIRTABLE_TOKEN$";
 const BASE_ID = "appte9MwDwd1p6Bu5";
 const TABLE_ID = "tblioq7HEm4Z39yt0";
 
-async function fetchRecipes() {
-  const url = `https://api.airtable.com/v0/${BASE_ID}/${TABLE_ID}`;
-  
-  const response = await fetch(url, {
-    headers: {
-      Authorization: `Bearer ${AIRTABLE_TOKEN}`
-    }
-  });
-
+async function loadRecipes() {
+  const response = await fetch("/.netlify/functions/airtable");
   const data = await response.json();
-  console.log("Recipes loaded:", data);
 
-  const recipesContainer = document.getElementById("recipes");
-  recipesContainer.innerHTML = "";
+  const container = document.getElementById("recipes");
+  container.innerHTML = "";
 
-  data.records.forEach((record) => {
+  data.records.forEach(record => {
     const fields = record.fields;
 
     const card = document.createElement("div");
     card.className = "recipe-card";
 
     card.innerHTML = `
-      <h2>${fields.Name || "Untitled Recipe"}</h2>
-      <p>${fields.Description || ""}</p>
+      <h3>${fields.Name || "Untitled Recipe"}</h3>
+      <p><strong>Difficulty:</strong> ${fields.Difficulty || "N/A"}</p>
+      <p><strong>Category:</strong> ${fields.Category || "N/A"}</p>
+      <p><strong>Time Required:</strong> ${fields["Time Required"] || "N/A"}</p>
     `;
 
-    recipesContainer.appendChild(card);
+    container.appendChild(card);
   });
 }
 
-fetchRecipes();
+loadRecipes();
