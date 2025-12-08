@@ -3,149 +3,57 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sheza's Food Studio</title>
-
-  <!-- Google Fonts: Playfair Display + Poppins -->
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <title>Sheza’s Food Studio</title>
 
   <style>
-    /* Base Styles */
     body {
-      margin: 0;
-      font-family: 'Poppins', sans-serif;
-      background-color: #FAF7F0; /* flour white */
-      color: #4E3B31; /* espresso */
-      text-align: center;
-    }
-
-    /* Container (hero section) */
-    .container {
-      background-color: #D8A47F; /* terra cotta */
-      width: 90%;
-      max-width: 900px;
-      margin: 60px auto;
-      padding: 80px 30px;
-      border-radius: 20px;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-    }
-
-    h1 {
-      font-family: 'Playfair Display', serif;
-      font-size: 3rem;
-      font-weight: 700;
-      margin-bottom: 20px;
-    }
-
-    p {
-      font-size: 1.3rem;
-      margin: 0 auto 40px;
-      max-width: 650px;
-      line-height: 1.6;
-    }
-
-    /* Button */
-    .fun-button {
-      display: inline-flex;
-      align-items: center;
-      gap: 12px;
-      background-color: #A3B59F; /* sage green */
-      padding: 18px 32px;
-      border-radius: 50px;
-      font-size: 1.3rem;
-      font-weight: 500;
-      color: #4E3B31; /* espresso */
-      text-decoration: none;
-      box-shadow: 0 6px 12px rgba(0,0,0,0.15);
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
-
-    .fun-button:hover {
-      transform: scale(1.05);
-      box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-    }
-
-    /* Steam Emoji Animation */
-    @keyframes steamRise {
-      0% {
-        transform: translateY(0) scale(1);
-        opacity: 0.8;
-      }
-      50% {
-        transform: translateY(-8px) scale(1.1);
-        opacity: 1;
-      }
-      100% {
-        transform: translateY(-16px) scale(1);
-        opacity: 0;
-      }
-    }
-
-    .steam {
-      display: inline-block;
-      animation: steamRise 2s infinite ease-in-out;
-    }
-
-    /* Recipe Cards */
-    .recipe-card {
-      background-color: #f9f3ee; /* dough brown light */
+      font-family: Arial, sans-serif;
       padding: 20px;
-      margin: 15px auto;
-      border-radius: 12px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-      font-family: "Poppins", sans-serif;
-      width: 90%;
-      max-width: 700px;
-      text-align: left;
+      background: #fafafa;
     }
-
-    .recipe-card h3 {
-      font-family: "Playfair Display", serif;
-      margin-bottom: 10px;
-    }
-
-    /* Footer */
-    footer {
-      margin-top: 80px;
-      font-size: 0.9rem;
-      color: #4E3B31;
-      opacity: 0.7;
-    }
-
-    /* Responsive */
-    @media (max-width: 600px) {
-      h1 {
-        font-size: 2.2rem;
-      }
-      p {
-        font-size: 1.1rem;
-      }
-      .fun-button {
-        padding: 14px 24px;
-        font-size: 1.1rem;
-      }
+    .recipe {
+      background: white;
+      padding: 15px;
+      margin-bottom: 15px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
   </style>
 </head>
 
 <body>
+  <h1>Recipes</h1>
+  <div id="recipe-list">Loading recipes...</div>
 
-  <div class="container">
-    <h1>Welcome to My Food Studio</h1>
-    <p>Just Warming Up! Delicious recipes, tips, and culinary inspiration are coming your way. Stay tuned!</p>
-    <a class="fun-button" href="#">
-      🍲 <span>Recipes Coming Soon</span> <span class="steam">♨️</span>
-    </a>
-  </div>
+  <script>
+    async function loadRecipes() {
+      try {
+        const res = await fetch("/.netlify/functions/airtable");
+        const data = await res.json();
 
-  <!-- Where recipes will appear -->
-  <div id="recipes"></div>
+        const list = document.getElementById("recipe-list");
+        list.innerHTML = "";
 
-  <footer>
-    &copy; 2025 Sheza's Food Studio
-  </footer>
+        if (!data.records || data.records.length === 0) {
+          list.innerHTML = "<p>No recipes found.</p>";
+          return;
+        }
 
-  <!-- JS file that fetches recipes -->
-  <script src="fetch-recipes.js"></script>
+        data.records.forEach(r => {
+          const div = document.createElement("div");
+          div.className = "recipe";
+          div.innerHTML = `
+            <h3>${r.fields.Name || "No name"}</h3>
+            <p>${r.fields.Description || ""}</p>
+          `;
+          list.appendChild(div);
+        });
+      } catch (err) {
+        document.getElementById("recipe-list").innerHTML = "Error loading recipes.";
+      }
+    }
 
+    loadRecipes();
+  </script>
 </body>
 </html>
