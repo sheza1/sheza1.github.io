@@ -1,41 +1,29 @@
-// netlify/functions/airtable.js
-import fetch from "node-fetch";
+export async function handler() {
 
-export async function handler(event, context) {
+  const AIRTABLE_TOKEN = process.env.AIRTABLE_TOKEN;
+  const BASE_ID = "appte9MwDwd1p6Bu5";
+  const TABLE_ID = "tblioq7HEm4Z39yt0";
+
+  const url = `https://api.airtable.com/v0/${BASE_ID}/${TABLE_ID}`;
+
   try {
-    const apiKey = process.env.AIRTABLE_API_KEY;
-    const baseId = process.env.AIRTABLE_BASE_ID;
-    const tableId = process.env.AIRTABLE_TABLE_ID;
-
-    if (!apiKey || !baseId || !tableId) {
-      return {
-        statusCode: 500,
-        body: JSON.stringify({
-          error: "Missing environment variables.",
-          received: { apiKey: !!apiKey, baseId: !!baseId, tableId: !!tableId }
-        }),
-      };
-    }
-
-    const url = `https://api.airtable.com/v0/${baseId}/${tableId}`;
-
     const response = await fetch(url, {
       headers: {
-        Authorization: `Bearer ${apiKey}`,
-      },
+        Authorization: `Bearer ${AIRTABLE_TOKEN}`
+      }
     });
 
     const data = await response.json();
 
     return {
       statusCode: 200,
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
+      body: JSON.stringify(data)
     };
-  } catch (err) {
+
+  } catch (error) {
     return {
       statusCode: 500,
-      body: JSON.stringify({ error: err.message }),
+      body: JSON.stringify({ error: error.message })
     };
   }
 }
