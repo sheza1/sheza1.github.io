@@ -8,52 +8,70 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      padding: 20px;
       background: #fafafa;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      text-align: center;
     }
-    .recipe {
-      background: white;
-      padding: 15px;
-      margin-bottom: 15px;
-      border-radius: 8px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+
+    .container {
+      max-width: 400px;
+      padding: 20px;
+    }
+
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 20px;
+    }
+
+    .btn {
+      background: #000;
+      color: #fff;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 6px;
+      font-size: 1rem;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .btn:hover {
+      opacity: 0.85;
+    }
+
+    /* 🚀 ANIMATED EMOJI */
+    .emoji {
+      display: inline-block;
+      animation: bounce 1.2s infinite ease-in-out;
+    }
+
+    @keyframes bounce {
+      0%, 100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-6px);
+      }
     }
   </style>
 </head>
 
 <body>
-  <h1>Recipes</h1>
-  <div id="recipe-list">Loading recipes...</div>
+  <div class="container">
+    <h1>Sheza’s Food Studio</h1>
+    <p>Explore premium recipes and step-by-step cooking videos.</p>
 
-  <script>
-    async function loadRecipes() {
-      try {
-        const res = await fetch("/.netlify/functions/airtable");
-        const data = await res.json();
-
-        const list = document.getElementById("recipe-list");
-        list.innerHTML = "";
-
-        if (!data.records || data.records.length === 0) {
-          list.innerHTML = "<p>No recipes found.</p>";
-          return;
-        }
-
-        data.records.forEach(r => {
-          const div = document.createElement("div");
-          div.className = "recipe";
-          div.innerHTML = `
-            <h3>${r.fields.Name || "No name"}</h3>
-            <p>${r.fields.Description || ""}</p>
-          `;
-          list.appendChild(div);
-        });
-      } catch (err) {
-        document.getElementById("recipe-list").innerHTML = "Error loading recipes.";
-      }
-    }
-
-    loadRecipes();
-  </script>
+    <a href="recipes.html" class="btn">
+      <span class="emoji">🍳</span> See What’s Cooking
+    </a>
+  </div>
 </body>
 </html>
